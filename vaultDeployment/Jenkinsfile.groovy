@@ -12,7 +12,6 @@ node {
         sh 'pwd'
         sh "terraform init"
       }
-    }
     stage("Terraform Plan/Apply/Destroy"){
       if (params.terraformPlan.toLowerCase() == 'plan') {
         dir("${workspace}/vaultDeployment") {
