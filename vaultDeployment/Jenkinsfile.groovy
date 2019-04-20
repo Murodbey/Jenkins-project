@@ -15,7 +15,7 @@ node('master') {
     stage("Terraform Plan/Apply/Destroy"){
       if (params.terraformPlan.toLowerCase() == 'plan') {
         dir("${workspace}/vaultDeployment/") {
-          sh "terraform plan --auto-approve"
+          sh "terraform plan"
         }
       } 
       if (params.terraformPlan.toLowerCase() == 'apply') {
