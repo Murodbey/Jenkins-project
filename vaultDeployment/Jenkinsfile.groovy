@@ -1,12 +1,18 @@
     
 node {
   properties([parameters([string(defaultValue: 'plan', description: 'Please provide what action you want? (plan,apply,destroy)', name: 'terraformPlan', trim: true), string(defaultValue: 'default_token_add_here', description: 'Please provide a token for vault', name: 'Provide token', trim: true)])])
-      stage("Terraform init"){ 
-        dir("${workspace}/vaultDeployment") {
-          sh 'ls'
-          sh 'pwd'
-          sh "terraform init"
+  stages{
+    stage("Git Pull"){
+            steps{
+                git 'https://github.com/Murodbey/Jenkins-project.git'
+            }
         }
+    stage("Terraform init"){ 
+      dir("${workspace}/vaultDeployment") {
+        sh 'ls'
+        sh 'pwd'
+        sh "terraform init"
+      }
     }
     stage("Terraform Plan/Apply/Destroy"){
       if (params.terraformPlan.toLowerCase() == 'plan') {
@@ -26,4 +32,5 @@ node {
           }
       }
     }
+  }
 }
