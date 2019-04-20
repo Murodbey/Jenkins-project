@@ -11,9 +11,10 @@ node {
         sh 'terraform plan --auto-approve'
       } else {
         sh 'terraform apply --auto-approve'
-      } else {
-        sh 'terraform destroy --auto-approve'
         }
+    //    else {
+    //     sh 'terraform destroy --auto-approve'
+    //     }
       }
     }
   }
