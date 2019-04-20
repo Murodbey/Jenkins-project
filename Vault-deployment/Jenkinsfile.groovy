@@ -5,12 +5,16 @@ node {
         sh "terraform init"
     }
     stage("Terraform Plan/Apply/Destroy"){
+        steps {
+            script {
       if (params.terraformPlan) {
         sh 'terraform plan --auto-approve'
       } else {
         sh 'terraform apply --auto-approve';
       } else {
-        sh 'terraform destroy --auto-approve';
+        sh 'terraform destroy --auto-approve'
+        }
+      }
     }
   }
 }
