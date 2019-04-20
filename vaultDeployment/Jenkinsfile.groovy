@@ -25,5 +25,5 @@ node {
             sh "terraform destroy --auto-approve"
           }
       }
-    
+    }
 }
