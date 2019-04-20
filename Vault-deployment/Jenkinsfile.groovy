@@ -8,9 +8,9 @@ node {
       if (params.terraformPlan) {
         sh "terraform plan --auto-approve"
       }
-    } else (params.terraformApply) {
+    } else {
         sh "terraform apply --auto-approve"
-    } else (params.terraformDestroy) {
+    } else {
         sh "terraform destroy --auto-approve"
     }
 }
