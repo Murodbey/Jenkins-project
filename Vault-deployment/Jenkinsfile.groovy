@@ -7,10 +7,10 @@ node {
     stage("Terraform Plan/Apply/Destroy"){
       if (params.terraformPlan) {
         sh 'terraform plan --auto-approve'
-      }
-    } else {
+      } else {
         sh 'terraform apply --auto-approve';
-    } else {
+      } else {
         sh 'terraform destroy --auto-approve';
     }
+  }
 }
