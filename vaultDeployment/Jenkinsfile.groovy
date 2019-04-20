@@ -7,25 +7,25 @@ node('master') {
     )])
     checkout scm
     stage("Terraform init") {
-      dir("${workspace}/deployment/vault/") {
+      dir("${workspace}/vaultDeployment/") {
         sh 'ls'
         sh 'pwd'
         sh "terraform init"
       }
     stage("Terraform Plan/Apply/Destroy"){
       if (params.terraformPlan.toLowerCase() == 'plan') {
-        dir("${workspace}/deployment/vault/") {
+        dir("${workspace}/vaultDeployment/") {
           sh "terraform plan --auto-approve"
         }
       } 
       if (params.terraformPlan.toLowerCase() == 'apply') {
-          dir("${workspace}/deployment/vault/") {
+          dir("${workspace}/vaultDeployment/") {
             sh "terraform apply --auto-approve"
           }
         } 
 
       if (params.terraformPlan.toLowerCase() == 'destroy') {
-         dir("${workspace}/deployment/vault/") {
+         dir("${workspace}/vaultDeployment/") {
             sh "terraform destroy --auto-approve"
           }
       }
