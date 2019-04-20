@@ -3,6 +3,7 @@ node {
   properties([parameters([string(defaultValue: 'plan', description: 'Please provide what action you want? (plan,apply,destroy)', name: 'Terraform_plan_apply_destroy', trim: true), string(defaultValue: 'default_token_add_here', description: 'Please provide a token for vault', name: 'Provide token', trim: true)])])
       stage("Terraform init"){ 
         ws("${workspace}/Vault-deployment/") {
+          sh 'pwd'
           sh "terraform init"
         }
     }
