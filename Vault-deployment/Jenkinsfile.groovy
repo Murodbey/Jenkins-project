@@ -8,9 +8,9 @@ node {
         steps {
             script {
       if (params.terraformPlan) {
-        sh 'terraform plan --auto-approve'
+        sh "terraform plan --auto-approve"
       } else {
-        sh 'terraform apply --auto-approve'
+        sh "terraform apply --auto-approve"
         }
     //    else {
     //     sh 'terraform destroy --auto-approve'
