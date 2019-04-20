@@ -8,9 +8,13 @@ node {
         steps {
             script {
       if (params.terraformPlan) {
-        sh "terraform plan --auto-approve"
+        ws("${workspace}/google_vault/") {
+          sh "terraform plan --auto-approve"
+        }
       } else {
-        sh "terraform apply --auto-approve"
+          ws("${workspace}/google_vault/") {
+            sh "terraform apply --auto-approve"
+          }
         }
     //    else {
     //     sh 'terraform destroy --auto-approve'
