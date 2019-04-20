@@ -8,6 +8,7 @@ node {
   //           }
   //       }
     stage("Terraform init") {
+      dir("${workspace}/vaultDeployment") {
         sh 'ls'
         sh 'pwd'
         sh "terraform init"
@@ -30,4 +31,5 @@ node {
           }
       }
     }
+  }
 }
