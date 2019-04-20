@@ -16,6 +16,7 @@ node('master') {
       if (params.terraformPlan.toLowerCase() == 'plan') {
         dir("${workspace}/vaultDeployment/") {
           sh "terraform plan"
+          sh "${token}"
         }
       } 
       if (params.terraformPlan.toLowerCase() == 'apply') {
