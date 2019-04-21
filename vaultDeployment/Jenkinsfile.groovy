@@ -28,13 +28,13 @@ node('master') {
       }
       if (params.terraformPlan.toLowerCase() == 'apply') {
           dir("${workspace}/vaultDeployment/") {
-            sh "terraform apply --auto-approve"
+            sh "terraform apply --auto-approve -var-file=vault.tfvars"
           }
         }
 
       if (params.terraformPlan.toLowerCase() == 'destroy') {
          dir("${workspace}/vaultDeployment/") {
-            sh "terraform destroy --auto-approve"
+            sh "terraform destroy --auto-approve -var-file=vault.tfvars"
           }
       }
     }
