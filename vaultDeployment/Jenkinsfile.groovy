@@ -1,4 +1,7 @@
-    
+#!/usr/bin/env groovy
+package com.lib
+import groovy.json.JsonSlurper
+
 node('master') {
   properties([parameters([
     string(defaultValue: 'plan', description: 'Please provide what action you want? (plan,apply,destroy)', name: 'terraformPlan', trim: true), 
