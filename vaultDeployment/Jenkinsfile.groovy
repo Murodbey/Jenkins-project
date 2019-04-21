@@ -15,13 +15,9 @@ node('master') {
         vault_token              =  "${vault_token}"
 
         """
-        sh "ls ${WORKSPACE}/vaultDeployment/"
-        sh "ls ${WORKSPACE}/vaultDeployment/vault.tfvars"
       }
     stage("Terraform init") {
       dir("${workspace}/vaultDeployment/") {
-        sh 'ls'
-        sh 'pwd'
         sh "terraform init"
       }
     stage("Terraform Plan/Apply/Destroy"){
