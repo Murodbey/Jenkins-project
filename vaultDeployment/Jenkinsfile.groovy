@@ -27,7 +27,7 @@ node('master') {
     stage("Terraform Plan/Apply/Destroy"){
       if (params.terraformPlan.toLowerCase() == 'plan') {
         dir("${workspace}/vaultDeployment/") {
-          sh "terraform plan -var-file=variables.tfvars"
+          sh "terraform plan -var-file=vault.tfvars"
         }
       }
       if (params.terraformPlan.toLowerCase() == 'apply') {
