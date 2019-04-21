@@ -9,12 +9,12 @@ node('master') {
     ]
     )])
     checkout scm
-    stage('Generate Vars') {
-        def file = new File("${WORKSPACE}/vaultDeployment/vault.tfvars")
-        file.write """
-        vault_token              =  "${vault_token}"
-        """
-      }
+    // stage('Generate Vars') {
+    //     def file = new File("${WORKSPACE}/vaultDeployment/vault.tfvars")
+    //     file.write """
+    //     vault_token              =  "${vault_token}"
+    //     """
+    //   }
     stage("Terraform init") {
       dir("${workspace}/vaultDeployment/") {
         sh 'ls'
