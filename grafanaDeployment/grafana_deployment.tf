@@ -1,7 +1,7 @@
 resource "kubernetes_secret" "grafana-secrets" {
   metadata {
     name      = "grafana-secrets"
-    namespace = "tools"
+    namespace = "${var.namespace}"
   }
   data {
     password = "${var.password}"
@@ -15,7 +15,7 @@ resource "kubernetes_persistent_volume_claim" "grafana-pvc" {
 
   metadata {
     name      = "grafana-pvc"
-    namespace = "tools"
+    namespace = "${var.namespace}"
 
     labels {
       app = "grafana-deployment"
@@ -37,7 +37,7 @@ resource "kubernetes_deployment" "grafana-deployment" {
 
   metadata {
     name      = "grafana-deployment"
-    namespace = "tools"
+    namespace = "${var.namespace}"
 
     labels {
       app       = "grafana-deployment"
@@ -135,7 +135,7 @@ resource "kubernetes_service" "grafana-service" {
   depends_on = ["kubernetes_secret.grafana-secrets"]  
   metadata {
     name      = "grafana-service"
-    namespace = "tools"
+    namespace = "${var.namespace}"
   }
 
   spec {

@@ -1,1 +1,2 @@
 variable    "password"   {}
+variable    "namespace"  {}
