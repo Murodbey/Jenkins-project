@@ -3,8 +3,7 @@ package com.lib
 import groovy.json.JsonSlurper
 
 node('master') {
-  properties([parameters([
-    booleanParam(defaultValue: false, description: 'Plan before apply', name: 'terraformPlan'), 
+  properties([parameters([ 
     booleanParam(defaultValue: false, description: 'Apply All Changes', name: 'terraformApply'), 
     booleanParam(defaultValue: false, description: 'Destroy All', name: 'terraformDestroy'), 
     string(defaultValue: 'default_password', description: 'Please provide password for grafana', name: 'password', trim: true),
