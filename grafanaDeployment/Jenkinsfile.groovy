@@ -45,16 +45,10 @@ node('master') {
           dir("${WORKSPACE}/grafanaDeployment") {
             echo "##### Terraform Destroying ####"
             sh "terraform destroy --auto-approve -var-file=grafana.tfvars"
-           }
-         } else {
-           println("""
-           Sorry I don`t understand ${params.terraformPlan}!!!
-              Please provide correct option (plan/apply/destroy)
-           """)
-           }
-         }
-       }
-
+          }
+        } 
+      }
+    }
        if (params.terraformDestroy) {
          if (params.terraformApply) {
            println("""
