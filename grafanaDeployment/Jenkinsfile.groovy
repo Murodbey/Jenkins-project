@@ -24,27 +24,42 @@ node('master') {
         sh "terraform init"
       }
     }
-    stage("Terraform Plan/Apply/Destroy"){
-      if (params.terraformPlan) {
-        dir("${workspace}/grafanaDeployment/") {
-        echo "##### Terraform Plan (Check) the Changes ####"
-        sh "terraform plan -var-file=grafana.tfvars"
-        }
-      } else if (params.terraformApply) {
-               dir("${workspace}/grafanaDeployment/") {
-               echo "##### Terraform Applying the Changes ####"
-               sh "terraform apply --auto-approve -var-file=grafana.tfvars"
-        }
-      } else if (params.terraformDestroy) {
-               dir("${workspace}/grafanaDeployment/") {
-               echo "##### Terraform Destroying grafana deployment ####"
-               sh "terraform destroy --auto-approve -var-file=grafana.tfvars"
+    stage("Terraform Apply/Plan"){
+      if (!params.terraformDestroy) {
+        if (params.terraformApply) {
+          dir("${workspace}/grafanaDeployment/") {
+            echo "##### Terraform Applying the Changes ####"
+            sh "terraform apply --auto-approve -var-file=grafana.tfvars"
         }
       } else {
-        println("""
-              Sorry I don`t understand ${params.terraformPlan}!!!
-              Please provide correct option (plan/apply/destroy)
-              """)
-      }
+          dir("${WORKSPACE}/grafanaDeployment") {
+            echo "##### Terraform Plan (Check) the Changes ####"
+            sh "terraform plan -var-file=grafana.tfvars"
+          }
+        }
+      } 
     }
-}
+    stage('Terraform Destroy') {
+      if (!params.terraformApply) {
+        if (params.terraformDestroy) {
+          dir("${WORKSPACE}/grafanaDeployment") {
+            echo "##### Terraform Destroying ####"
+            sh "terraform destroy --auto-approve -var-file=grafana.tfvars"
+           }
+         } else {
+           println("""
+           Sorry I don`t understand ${params.terraformPlan}!!!
+              Please provide correct option (plan/apply/destroy)
+           """)
+           }
+         }
+       }
+
+       if (params.terraformDestroy) {
+         if (params.terraformApply) {
+           println("""
+           Sorry you can not destroy and apply at the same time
+           """)
+        }
+    }
+ }
