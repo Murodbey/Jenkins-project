@@ -4,43 +4,57 @@ import groovy.json.JsonSlurper
 
 node('master') {
   properties([parameters([
-    string(defaultValue: 'plan', description: 'Please provide what action you want? (plan,apply,destroy)', name: 'terraformPlan', trim: true),
-    string(defaultValue: 'default_token_add_here', description: 'Please provide a token for vault', name: 'vault_token', trim: true)
+    booleanParam(defaultValue: false, description: 'Apply All Changes', name: 'terraformApply'),
+    booleanParam(defaultValue: false, description: 'Destroy All', name: 'terraformDestroy'),  
+    string(defaultValue: 'default_token', description: 'Please provide a token for vault', name: 'vault_token', trim: true),
+    string(defaultValue: 'test', description: 'Please provide namespace for vault-deployment', name: 'namespace', trim: true)
     ]
     )])
     stage('Checkout SCM') {
       git 'https://github.com/Murodbey/Terraform-project.git'
-    }
+    } 
     stage('Generate Vars') {
         def file = new File("${WORKSPACE}/Vault-deployment/vault.tfvars")
         file.write """
         vault_token              =  "${vault_token}"
-
+        namespace                =  "${namespace}"
         """
       }
     stage("Terraform init") {
       dir("${workspace}/Vault-deployment/") {
         sh "terraform init"
       }
-    stage("Terraform Plan/Apply/Destroy"){
-      if (params.terraformPlan.toLowerCase() == 'plan') {
-        dir("${workspace}/Vault-deployment/") {
-          sh "terraform plan -var-file=vault.tfvars"
-        }
-      } else if (params.terraformPlan.toLowerCase() == 'apply') {
+    }
+        stage("Terraform Apply/Plan"){
+      if (!params.terraformDestroy) {
+        if (params.terraformApply) {
           dir("${workspace}/Vault-deployment/") {
+            echo "##### Terraform Applying the Changes ####"
             sh "terraform apply --auto-approve -var-file=vault.tfvars"
+        }
+      } else {
+          dir("${WORKSPACE}/Vault-deployment") {
+            echo "##### Terraform Plan (Check) the Changes ####"
+            sh "terraform plan -var-file=vault.tfvars"
           }
-        } else if (params.terraformPlan.toLowerCase() == 'destroy') {
-         dir("${workspace}/Vault-deployment/") {
+        }
+      } 
+    }
+    stage('Terraform Destroy') {
+      if (!params.terraformApply) {
+        if (params.terraformDestroy) {
+          dir("${WORKSPACE}/Vault-deployment") {
+            echo "##### Terraform Destroying ####"
             sh "terraform destroy --auto-approve -var-file=vault.tfvars"
           }
-      } else {
-        println("""
-              Sorry I don`t understand ${params.terraformPlan}!!!
-              Please provide correct option (plan/apply/destroy)
-              """)
+        } 
       }
     }
-  }
+       if (params.terraformDestroy) {
+         if (params.terraformApply) {
+           println("""
+           Sorry you can not destroy and apply at the same time
+           """)
+        }
+    }
 }
