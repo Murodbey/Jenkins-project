@@ -6,9 +6,9 @@ node('master') {
   properties([parameters([
     choice(choices: ['Vault-deployment', 'Grafana-deployment', 'Jira-deployment', 'Nexus-deployment'], description: 'Please choose which service do you want to deploy', name: 'Service'),
     booleanParam(defaultValue: false, description: 'Apply All Changes', name: 'terraformApply'),
-    booleanParam(defaultValue: false, description: 'Destroy All', name: 'terraformDestroy'),  
-    string(defaultValue: 'default_token', description: 'Please provide a token for vault', name: 'vault_token', trim: true),
-    string(defaultValue: 'test', description: 'Please provide namespace for vault-deployment', name: 'namespace', trim: true)
+    booleanParam(defaultValue: false, description: 'Destroy All', name: 'terraformDestroy'),
+    string(defaultValue: 'test', description: 'Please provide namespace for deployment', name: 'namespace', trim: true),  
+    string(defaultValue: 'secret', description: 'Please provide a secret for deployment', name: 'secret', trim: true)
     ]
     )])
     stage('Checkout SCM') {
