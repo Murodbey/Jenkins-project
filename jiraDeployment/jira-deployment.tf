@@ -21,9 +21,9 @@ resource "kubernetes_persistent_volume_claim" "jira-pvc" {
   }
 }
 
-resource "kubernetes_deployment" "Jira-deployment" {
+resource "kubernetes_deployment" "jira-deployment" {
   metadata {
-    name      = "Jira-deployment"
+    name      = "jira-deployment"
     namespace = "${var.namespace}"
 
     labels {
