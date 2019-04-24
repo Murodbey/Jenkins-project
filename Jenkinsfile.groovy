@@ -18,7 +18,7 @@ node('master') {
       if ("${params.Service}" == "vaultDeployment") {
         def file = new File("${WORKSPACE}/Vault-deployment/vault.tfvars")
         file.write """
-        vault_token              =  "${vault_token}"
+        vault_token              =  "${secret}"
         namespace                =  "${namespace}"
         """
         }
