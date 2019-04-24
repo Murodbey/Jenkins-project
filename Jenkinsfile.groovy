@@ -65,6 +65,5 @@ node('master') {
            println("""
            Sorry you can not destroy and apply at the same time
            """)
-        }
     }
 }
