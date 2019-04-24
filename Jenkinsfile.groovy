@@ -25,6 +25,7 @@ node('master') {
         }
       }
     }
+    agent none
     stage("Terraform init") {
       if ("${params.Service}" == "vaultDeployment") {
         dir("${env.WORKSPACE}/Vault-deployment") {
