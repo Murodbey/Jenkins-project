@@ -42,7 +42,7 @@ node('master') {
             }
         }
       } else {
-          dir("${WORKSPACE}/Vault-deployment") {
+          dir("${WORKSPACE}/Vault-deployment/") {
             echo "##### Terraform Plan (Check) the Changes ####"
             sh "terraform plan -var-file=vault.tfvars"
           }
@@ -53,7 +53,7 @@ node('master') {
       if ("${params.Service}" == "vaultDeployment") {
         if (!params.terraformApply) {
           if (params.terraformDestroy) {
-            dir("${WORKSPACE}/Vault-deployment") {
+            dir("${WORKSPACE}/Vault-deployment/") {
               echo "##### Terraform Destroying ####"
               sh "terraform destroy --auto-approve -var-file=vault.tfvars"
             }
