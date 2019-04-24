@@ -95,7 +95,6 @@ node('master') {
               echo "##### Terraform Applying the Changes ####"
               sh "terraform apply --auto-approve -var-file=grafana.tfvars"
             }
-        }
       } else {
           dir("${env.WORKSPACE}/Grafana-deployment") {
             echo "##### Terraform Plan (Check) the Changes ####"
@@ -103,7 +102,8 @@ node('master') {
           }
         }
       } 
-    }
+    } 
+  }
     stage('Terraform Destroy') {
       if ("${params.Service}" == "grafanaDeployment") {
         if (!params.terraformApply) {
@@ -149,7 +149,6 @@ node('master') {
               echo "##### Terraform Applying the Changes ####"
               sh "terraform apply --auto-approve -var-file=nexus.tfvars"
             }
-        }
       } else {
           dir("${env.WORKSPACE}/Nexus-deployment") {
             echo "##### Terraform Plan (Check) the Changes ####"
@@ -157,7 +156,8 @@ node('master') {
           }
         }
       } 
-    }
+    } 
+  }
     stage('Terraform Destroy') {
       if ("${params.Service}" == "nexusDeployment") {
         if (!params.terraformApply) {
@@ -203,7 +203,6 @@ node('master') {
               echo "##### Terraform Applying the Changes ####"
               sh "terraform apply --auto-approve -var-file=jira.tfvars"
             }
-        }
       } else {
           dir("${env.WORKSPACE}/Jira-deployment") {
             echo "##### Terraform Plan (Check) the Changes ####"
@@ -211,7 +210,8 @@ node('master') {
           }
         }
       } 
-    }
+    } 
+  }
     stage('Terraform Destroy') {
       if ("${params.Service}" == "jiraDeployment") {
         if (!params.terraformApply) {
