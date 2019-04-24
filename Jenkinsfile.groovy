@@ -16,7 +16,7 @@ node('master') {
     } 
     stage('Generate Vars')   {
       if ("${params.Service}" == "vaultDeployment") {
-        def file = new File("${WORKSPACE}/Vault-deployment/vault.tfvars")
+        def file = new File("${env.WORKSPACE}/Vault-deployment/vault.tfvars")
         file.write """
         secret              =  "${secret}"
         namespace           =  "${namespace}"
@@ -26,7 +26,7 @@ node('master') {
     }
     stage("Terraform init") {
       if ("${params.Service}" == "vaultDeployment") {
-        dir("${WORKSPACE}/Vault-deployment") {
+        dir("${env.WORKSPACE}/Vault-deployment") {
           sh "terraform init"
         }
       }
@@ -35,13 +35,13 @@ node('master') {
       if ("${params.Service}" == "vaultDeployment") {
         if (!params.terraformDestroy) {
           if (params.terraformApply) {
-            dir("${WORKSPACE}/Vault-deployment") {
+            dir("${env.WORKSPACE}/Vault-deployment") {
               echo "##### Terraform Applying the Changes ####"
               sh "terraform apply --auto-approve -var-file=vault.tfvars"
             }
         }
       } else {
-          dir("${WORKSPACE}/Vault-deployment") {
+          dir("${env.WORKSPACE}/Vault-deployment") {
             echo "##### Terraform Plan (Check) the Changes ####"
             sh "terraform plan -var-file=vault.tfvars"
           }
@@ -52,7 +52,7 @@ node('master') {
       if ("${params.Service}" == "vaultDeployment") {
         if (!params.terraformApply) {
           if (params.terraformDestroy) {
-            dir("${WORKSPACE}/Vault-deployment") {
+            dir("${env.WORKSPACE}/Vault-deployment") {
               echo "##### Terraform Destroying ####"
               sh "terraform destroy --auto-approve -var-file=vault.tfvars"
             }
