@@ -16,6 +16,7 @@ node('master') {
     } 
     stage('Generate Vars')   {
       if ("${params.Service}" == "vaultDeployment") {
+        echo "##### Creating tfvars file ####"
         def file = new File("${env.WORKSPACE}/Vault-deployment/vault.tfvars")
         file.write """
         secret              =  "${secret}"
@@ -27,6 +28,7 @@ node('master') {
     stage("Terraform init") {
       if ("${params.Service}" == "vaultDeployment") {
         dir("${env.WORKSPACE}/Vault-deployment") {
+          echo "##### Terraform initializing ####"
           sh "terraform init"
         }
       }
