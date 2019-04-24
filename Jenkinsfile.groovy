@@ -19,7 +19,7 @@ node('master') {
         echo "##### Creating tfvars file ####"
         def file = new File("${env.WORKSPACE}/Vault-deployment/vault.tfvars")
         file.write """
-        secret              =  "${secret}"
+        secret              =  "${vault-token}"
         namespace           =  "${namespace}"
         """
       }
