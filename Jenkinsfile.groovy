@@ -24,6 +24,7 @@ node('master') {
           """
         }
       }
+    }
     stage("Terraform init") {
       if ("${params.Invoke_Parameters}" == "vaultDeployment") {
         dir("${workspace}/Vault-deployment/") {
