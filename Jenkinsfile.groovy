@@ -4,7 +4,7 @@ import groovy.json.JsonSlurper
 
 node('master') {
   properties([parameters([
-    choice(choices: ['grafanaDeployment', 'grafanaDeployment', 'jiraDeployment', 'nexusDeployment'], description: 'Please choose which service do you want to deploy', name: 'Service'),
+    choice(choices: ['vaultDeployment', 'grafanaDeployment', 'jiraDeployment', 'nexusDeployment'], description: 'Please choose which service do you want to deploy', name: 'Service'),
     booleanParam(defaultValue: false, description: 'Apply All Changes', name: 'terraformApply'),
     booleanParam(defaultValue: false, description: 'Destroy All', name: 'terraformDestroy'),
     string(defaultValue: 'test', description: 'Please provide namespace for deployment', name: 'namespace', trim: true),  
@@ -15,7 +15,7 @@ node('master') {
       git 'https://github.com/Murodbey/Terraform-project.git'
     } 
     stage('Generate Vars')   {
-      if ("${params.Service}" == "grafanaDeployment") {
+      if ("${params.Service}" == "vaultDeployment") {
         echo "##### Creating tfvars file ####"
         def file = new File("${env.WORKSPACE}/Vault-deployment/vault.tfvars")
         file.write """
@@ -25,7 +25,7 @@ node('master') {
       }
     }
     stage("Terraform init") {
-      if ("${params.Service}" == "grafanaDeployment") {
+      if ("${params.Service}" == "vaultDeployment") {
         dir("${env.WORKSPACE}/Vault-deployment") {
           echo "##### Terraform initializing ####"
           sh "terraform init"
@@ -33,7 +33,7 @@ node('master') {
       }
     }
     stage("Terraform Apply/Plan"){
-      if ("${params.Service}" == "grafanaDeployment") {
+      if ("${params.Service}" == "vaultDeployment") {
         if (!params.terraformDestroy) {
           if (params.terraformApply) {
             dir("${env.WORKSPACE}/Vault-deployment") {
@@ -50,7 +50,7 @@ node('master') {
       } 
     }
     stage('Terraform Destroy') {
-      if ("${params.Service}" == "grafanaDeployment") {
+      if ("${params.Service}" == "vaultDeployment") {
         if (!params.terraformApply) {
           if (params.terraformDestroy) {
             dir("${env.WORKSPACE}/Vault-deployment") {
