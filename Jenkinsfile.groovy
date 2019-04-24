@@ -22,10 +22,8 @@ node('master') {
         secret              =  "${secret}"
         namespace           =  "${namespace}"
         """
-        }
       }
     }
-    agent master
     stage("Terraform init") {
       if ("${params.Service}" == "vaultDeployment") {
         dir("${env.WORKSPACE}/Vault-deployment") {
