@@ -15,7 +15,7 @@ node('master') {
       git 'https://github.com/Murodbey/Terraform-project.git'
     } 
     stage('Generate Vars')   {
-      if ("${params.Invoke_Parameters}" == "vaultDeployment") {
+      if ("${params.Service}" == "vaultDeployment") {
         if (params.terraformApply) {
           def file = new File("${WORKSPACE}/Vault-deployment/vault.tfvars")
           file.write """
@@ -26,14 +26,14 @@ node('master') {
       }
     }
     stage("Terraform init") {
-      if ("${params.Invoke_Parameters}" == "vaultDeployment") {
+      if ("${params.Service}" == "vaultDeployment") {
         dir("${workspace}/Vault-deployment/") {
           sh "terraform init"
         }
       }
     }
     stage("Terraform Apply/Plan"){
-      if ("${params.Invoke_Parameters}" == "vaultDeployment") {
+      if ("${params.Service}" == "vaultDeployment") {
         if (!params.terraformDestroy) {
           if (params.terraformApply) {
             dir("${workspace}/Vault-deployment/") {
@@ -50,7 +50,7 @@ node('master') {
       } 
     }
     stage('Terraform Destroy') {
-      if ("${params.Invoke_Parameters}" == "vaultDeployment") {
+      if ("${params.Service}" == "vaultDeployment") {
         if (!params.terraformApply) {
           if (params.terraformDestroy) {
             dir("${WORKSPACE}/Vault-deployment") {
