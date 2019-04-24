@@ -16,12 +16,11 @@ node('master') {
     } 
     stage('Generate Vars')   {
       if ("${params.Service}" == "vaultDeployment") {
-        if (params.terraformApply) {
-          def file = new File("${WORKSPACE}/Vault-deployment/vault.tfvars")
-          file.write """
-          vault_token              =  "${vault_token}"
-          namespace                =  "${namespace}"
-          """
+        def file = new File("${WORKSPACE}/Vault-deployment/vault.tfvars")
+        file.write """
+        vault_token              =  "${vault_token}"
+        namespace                =  "${namespace}"
+        """
         }
       }
     }
