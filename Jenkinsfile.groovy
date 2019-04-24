@@ -18,15 +18,15 @@ node('master') {
       if ("${params.Service}" == "vaultDeployment") {
         def file = new File("${WORKSPACE}/Vault-deployment/vault.tfvars")
         file.write """
-        vault_token              =  "${secret}"
-        namespace                =  "${namespace}"
+        secret              =  "${secret}"
+        namespace           =  "${namespace}"
         """
         }
       }
     }
     stage("Terraform init") {
       if ("${params.Service}" == "vaultDeployment") {
-        dir("${workspace}/Vault-deployment/") {
+        dir("${WORKSPACE}/Vault-deployment/") {
           sh "terraform init"
         }
       }
@@ -35,7 +35,7 @@ node('master') {
       if ("${params.Service}" == "vaultDeployment") {
         if (!params.terraformDestroy) {
           if (params.terraformApply) {
-            dir("${workspace}/Vault-deployment/") {
+            dir("${WORKSPACE}/Vault-deployment/") {
               echo "##### Terraform Applying the Changes ####"
               sh "terraform apply --auto-approve -var-file=vault.tfvars"
             }
