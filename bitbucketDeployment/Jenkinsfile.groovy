@@ -55,7 +55,7 @@ node('master') {
            """)
         }
     }
-    tage("Sending slack notification") {
+    stage("Sending slack notification") {
       slackSend baseUrl: 'https://fuchicorp.slack.com/services/hooks/jenkins-ci/', 
       channel: 'test-message', 
       color: '#00FF00', 
