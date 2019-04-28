@@ -9,27 +9,29 @@ node('master') {
     string(defaultValue: 'test', description: 'Please provide namespace for bitbucket-deployment', name: 'namespace', trim: true)
     ]
     )])
-    checkout scm
+    stage('Checkout SCM') {
+      git 'https://github.com/Murodbey/Terraform-project.git'
+    } 
     stage('Generate Vars') {
-        def file = new File("${WORKSPACE}/bitbucketDeployment/bitbucket.tfvars")
+        def file = new File("${WORKSPACE}/Bitbucket-deployment/bitbucket.tfvars")
         file.write """
         namespace             =  "${namespace}"
         """
       }
     stage("Terraform init") {
-      dir("${workspace}/bitbucketDeployment/") {
+      dir("${workspace}/Bitbucket-deployment/") {
         sh "terraform init"
       }
     }
     stage("Terraform Apply/Plan"){
       if (!params.terraformDestroy) {
         if (params.terraformApply) {
-          dir("${workspace}/bitbucketDeployment/") {
+          dir("${workspace}/Bitbucket-deployment/") {
             echo "##### Terraform Applying the Changes ####"
             sh "terraform apply --auto-approve -var-file=bitbucket.tfvars"
         }
       } else {
-          dir("${WORKSPACE}/bitbucketDeployment") {
+          dir("${WORKSPACE}/Bitbucket-deployment") {
             echo "##### Terraform Plan (Check) the Changes ####"
             sh "terraform plan -var-file=bitbucket.tfvars"
           }
@@ -39,7 +41,7 @@ node('master') {
     stage('Terraform Destroy') {
       if (!params.terraformApply) {
         if (params.terraformDestroy) {
-          dir("${WORKSPACE}/bitbucketDeployment") {
+          dir("${WORKSPACE}/Bitbucket-deployment") {
             echo "##### Terraform Destroying ####"
             sh "terraform destroy --auto-approve -var-file=bitbucket.tfvars"
           }
