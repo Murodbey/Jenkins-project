@@ -59,7 +59,7 @@ node('master') {
       slackSend baseUrl: 'https://fuchicorp.slack.com/services/hooks/jenkins-ci/', 
       channel: 'test-message', 
       color: '#00FF00', 
-      message: 'The multi-srv job is build successful', 
+      message: 'The bitbucket job is build successful', 
       tokenCredentialId: 'slack-token' 
     }
  }
