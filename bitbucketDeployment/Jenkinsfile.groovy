@@ -55,4 +55,11 @@ node('master') {
            """)
         }
     }
+    tage("Sending slack notification") {
+      slackSend baseUrl: 'https://fuchicorp.slack.com/services/hooks/jenkins-ci/', 
+      channel: 'test-message', 
+      color: '#00FF00', 
+      message: 'The multi-srv job is build successful', 
+      tokenCredentialId: 'slack-token' 
+    }
  }
