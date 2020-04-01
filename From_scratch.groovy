@@ -8,15 +8,19 @@ node {
 
 
 
-  stage("Stage1"){ 
+  stage("Pull Repo"){ 
 
-    echo "hello" 
+    git "https://github.com/farrukh90/cool_website.git"
 
 } 
 
-  stage("Stage2"){ 
+  stage("Install prerequisites"){ 
 
-    echo "hello" 
+    sh """
+    sudo yum install httpd -y
+    sudo cp -r * /var/www/html/
+    sudo systemctl start httpd
+    """ 
 
 } 
 
