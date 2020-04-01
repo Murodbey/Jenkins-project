@@ -3,7 +3,7 @@ node {
       // Below line sets "Discards Builds more than 5"
       buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '5')), 
       // Below line triggers the job every minute
-      pipelineTriggers([cron('* * * * *')])])
+      pipelineTriggers([pollSCM('* * * * *')])])
 
 
 
