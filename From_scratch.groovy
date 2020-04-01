@@ -17,28 +17,37 @@ node {
   stage("Install prerequisites"){ 
 
     sh """
-    sudo yum install httpd -y
-    sudo cp -r * /var/www/html/
-    sudo systemctl start httpd
-    """ 
+stage("Install Prerequisites"){
+		sh """
+		ssh centos@jenkins_worker1.mr-robot95.com                 sudo yum install httpd -y
+
+		"""
+}
+
+  stage("Copy artifacts"){ 
+
+    sh """
+    scp -r *  centos@jenkins_worker1.mr-robot95.com:/tmp
+		ssh centos@jenkins_worker1.mr-robot95.com                 sudo cp -r /tmp/index.html /var/www/html/
+		ssh centos@jenkins_worker1.mr-robot95.com                 sudo cp -r /tmp/style.css /var/www/html/
+		ssh centos@jenkins_worker1.mr-robot95.com				         sudo chown centos:centos /var/www/html/
+		ssh centos@jenkins_worker1.mr-robot95.com				         sudo chmod 777 /var/www/html/*
+		
+    """
 
 } 
 
-  stage("Stage3"){ 
+  stage("Restart web server"){ 
 
-    echo "hello" 
-
-} 
-
-  stage("Stage4"){ 
-
-    echo "hello" 
+    sh """
+    ssh centos@jenkins_worker1.mr-robot95.com                 sudo systemctl restart httpd 
+    """
 
 } 
 
-  stage("Stage5"){ 
+  stage("Slack"){ 
 
-    echo "hello" 
+    slackSend color: '#BADA55', message: 'Hello, World!'
 
 } 
 
