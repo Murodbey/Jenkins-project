@@ -1,25 +1,35 @@
 node { 
-    properties([
-      // Below line sets "Discards Builds more than 5"
-      buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '5')), 
-      // Below line triggers the job every minute
-      pipelineTriggers([pollSCM('* * * * *')])])
+	properties([
+		// Below line sets "Discard Builds more than 5"
+		buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '5')), 
+		
+		// Below line triggers this job every minute
+		pipelineTriggers([pollSCM('* * * * *')]),
+		parameters([choice(choices: [
+			'dev1.mr-robot95.com', 
+			'qa1.mr-robot95.com', 
+			'stage1.mr-robot95.com', 
+			'prod1.mr-robot95.com'], 
+			description: 'Please choose an environment', 
+			name: 'ENVIR')]), 
+		])
 
 
 
-
+    // Pulls a repo from developer
   stage("Pull Repo"){ 
 
     git "https://github.com/farrukh90/cool_website.git"
 
 } 
-
+   //Installs web server on different environment
   stage("Install Prerequisites"){
 		sh """
 		ssh centos@jenkins_worker1.mr-robot95.com                 sudo yum install httpd -y
 		"""
 }
 
+   //Copies over developers files to different environment
   stage("Copy artifacts"){ 
 
     sh """
@@ -32,7 +42,7 @@ node {
     """
 
 } 
-
+  //Restarts web server
   stage("Restart web server"){ 
 
     sh """
@@ -40,7 +50,7 @@ node {
     """
 
 } 
-
+   //Sends a message to slack
   stage("Slack"){ 
 
     slackSend color: '#BADA55', message: 'Hello, World!'
