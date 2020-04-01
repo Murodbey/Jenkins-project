@@ -14,13 +14,9 @@ node {
 
 } 
 
-  stage("Install prerequisites"){ 
-
-    sh """
-stage("Install Prerequisites"){
+  stage("Install Prerequisites"){
 		sh """
 		ssh centos@jenkins_worker1.mr-robot95.com                 sudo yum install httpd -y
-
 		"""
 }
 
